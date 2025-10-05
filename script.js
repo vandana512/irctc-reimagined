@@ -739,9 +739,9 @@ function hideBookingModal() {
 // NOTE: You must also ensure the 'showMessageBox' function is present 
 // in your script.js for the validation message to work.
 
-function hideBookingModal() {
-    bookingModal.style.display = 'none';
-}
+// function hideBookingModal() {
+//     bookingModal.style.display = 'none';
+// }
 
 // --- Route Filtering Functionality ---
 document.querySelectorAll('.route-tab').forEach(tab => {
