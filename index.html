@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>IRCTC Reimagination - Faster, Smarter Booking</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <!-- Opening Screen -->
+    <div id="opening-screen" class="opening-screen">
+        <div class="logo-container">
+            <!-- Replace 'your-logo-video.mp4' with your actual video file path -->
+            <video class="logo-video" autoplay muted playsinline>
+                <source src="vid.mp4" type="video/mp4">
+                <!-- Fallback image if video doesn't load -->
+                <img src="https://placehold.co/300x300/1a5276/ffffff?text=IRCTC" alt="IRCTC Logo"
+                    style="width: 300px; height: 300px; border-radius: 20px;">
+            </video>
+            <p class="loading-text">Loading<span class="loading-dots"></span></p>
+        </div>
+    </div>
+
+    <!-- Custom Message Box for alerts -->
+    <div id="custom-message-box" class="message-box">
+        <div class="message-content">
+            <i class="fas fa-info-circle message-icon"></i>
+            <p id="message-text"></p>
+            <button onclick="hideMessageBox()" class="btn btn-primary btn-close-message">OK</button>
+        </div>
+    </div>
+
+    <!-- Login/Signup Modal -->
+    <div id="auth-modal" class="auth-modal-overlay">
+        <div class="auth-modal">
+            <div class="auth-header">
+                <h3><i class="fas fa-user-circle"></i> IRCTC Account</h3>
+                <button class="auth-close" onclick="hideAuthModal()">&times;</button>
+            </div>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Login</button>
+                <button class="auth-tab" data-tab="signup">Sign Up</button>
+            </div>
+            <div class="auth-content">
+                <!-- Login Form -->
+                <form id="login-form" class="auth-form active" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="login-username">User ID / Mobile No.</label>
+                        <input type="text" id="login-username" class="form-control"
+                            placeholder="Enter User ID or Mobile No." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" class="form-control" placeholder="Enter Password"
+                            required>
+                    </div>
+                    <div class="captcha-container">
+                        <div class="captcha-code" id="login-captcha">A1B2C3</div>
+                        <button type="button" class="captcha-refresh" onclick="refreshCaptcha('login')">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-captcha-input">Enter Captcha</label>
+                        <input type="text" id="login-captcha-input" class="form-control"
+                            placeholder="Enter text as shown" required>
+                    </div>
+                    <button type="submit" class="auth-submit">Login</button>
+                    <div class="auth-links">
+                        <a href="#" onclick="showForgotPassword()">Forgot Password?</a> |
+                        <a href="#" onclick="showForgotUsername()">Forgot User ID?</a>
+                    </div>
+                    <button type="button" class="auth-submit demo-btn" onclick="fillDemoCredentials()">
+                        Use Demo Account
+                    </button>
+                </form>
+
+                <!-- Signup Form -->
+                <form id="signup-form" class="auth-form" onsubmit="handleSignup(event)">
+                    <div class="form-group">
+                        <label for="signup-mobile">Mobile Number</label>
+                        <input type="tel" id="signup-mobile" class="form-control" placeholder="10-digit mobile number"
+                            pattern="[0-9]{10}" required>
+                        <div class="form-note">We'll send OTP to this number</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email ID</label>
+                        <input type="email" id="signup-email" class="form-control" placeholder="Enter email address"
+                            required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="signup-firstname">First Name</label>
+                            <input type="text" id="signup-firstname" class="form-control" placeholder="First name"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signup-lastname">Last Name</label>
+                            <input type="text" id="signup-lastname" class="form-control" placeholder="Last name"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" class="form-control" placeholder="Create password"
+                            required>
+                        <div class="form-note">Minimum 8 characters with at least one uppercase, one lowercase, one
+                            digit and one special character</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-confirm-password">Confirm Password</label>
+                        <input type="password" id="signup-confirm-password" class="form-control"
+                            placeholder="Re-enter password" required>
+                    </div>
+                    <div class="captcha-container">
+                        <div class="captcha-code" id="signup-captcha">X9Y8Z7</div>
+                        <button type="button" class="captcha-refresh" onclick="refreshCaptcha('signup')">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-captcha-input">Enter Captcha</label>
+                        <input type="text" id="signup-captcha-input" class="form-control"
+                            placeholder="Enter text as shown" required>
+                    </div>
+                    <button type="submit" class="auth-submit">Create Account</button>
+                    <div class="auth-links">
+                        By signing up, you agree to our <a href="#">Terms & Conditions</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <header class="navbar">
+        <div class="container">
+            <div class="logo">
+                <img src="logo1.png" alt="IRCTC Logo" class="header-logo-img" />
+            </div>
+            <nav class="nav-links">
+                <a href="#home" class="active">Home</a>
+                <a href="#booking-modal-trigger" onclick="showBookingModal()">Book Tickets</a>
+                <a href="#" id="lite-mode-toggle">Lite Mode</a>
+                <a href="#" onclick="toggleAIChatbot()">AI Assistant</a>
+                <a href="#features">About</a>
+            </nav>
+            <button class="btn btn-primary" onclick="showAuthModal()">Login / Signup</button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section" id="home">
+            <div class="container">
+                <div class="hero-content glass-card">
+                    <h1 class="hero-heading">Faster, Smarter, Simpler Train Booking</h1>
+                    <p class="hero-subtext">
+                        Reimagined IRCTC for millions of users – with real-time updates, AI assistant & Lite mode.
+                    </p>
+
+                    <!-- Booking Form -->
+                    <!-- <form class="booking-form" onsubmit="event.preventDefault(); showBookingModal();">
+                        <div class="form-group">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <input type="text" placeholder="From (e.g., NDLS)" />
+                        </div>
+                        <div class="form-group">
+                            <i class="fas fa-arrow-right-long"></i>
+                            <input type="text" placeholder="To (e.g., CSMT)" />
+                        </div>
+                        <div class="form-group">
+                            <i class="fas fa-calendar-alt"></i>
+                            <input type="date" value="2025-10-04" />
+                        </div>
+                        <button type="submit" class="btn btn-search">
+                            <i class="fas fa-magnifying-glass"></i> Search
+                        </button>
+                    </form> -->
+                    <form class="booking-form" onsubmit="event.preventDefault(); showBookingModal();">
+                        <div class="form-group">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <input type="text" id="from-station" placeholder="From (e.g., NDLS)" required />
+                        </div>
+                        <div class="form-group">
+                            <i class="fas fa-arrow-right-long"></i>
+                            <input type="text" id="to-station" placeholder="To (e.g., CSMT)" required />
+                        </div>
+                        <div class="form-group">
+                            <i class="fas fa-calendar-alt"></i>
+                            <input type="date" id="travel-date" value="2025-10-04" required />
+                        </div>
+                        <button type="submit" class="btn btn-search">
+                            <i class="fas fa-magnifying-glass"></i> Search
+                        </button>
+                    </form>
+                    <div class="predictive-suggestions">
+                        <small>Popular Routes: Delhi-Mumbai, Kolkata-Chennai, Bengaluru-Hyderabad</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PNR Status Check -->
+        <section class="pnr-section">
+            <div class="container">
+                <div class="pnr-card glass-card">
+                    <div class="pnr-input-group">
+                        <i class="fas fa-ticket-simple text-primary"></i>
+                        <input type="number" id="pnr-number" placeholder="Enter PNR Number (10 digits)"
+                            maxlength="10" />
+                        <button class="btn btn-search pnr-button" onclick="checkPNRStatus()">
+                            Check PNR Status
+                        </button>
+                    </div>
+                    <p class="pnr-status-result" id="pnr-result"></p>
+                </div>
+            </div>
+        </section>
+
+        <section class="popular-routes-section" id="popular-routes">
+            <div class="container">
+                <h2 class="section-title">Popular Routes</h2>
+                <p class="section-subtitle">Discover the most traveled routes across India with real-time availability
+                    and best prices.</p>
+
+                <!-- Route Category Tabs -->
+                <div class="route-tabs">
+                    <div class="route-tab active" data-category="all">
+                        <i class="fas fa-route"></i> All Routes
+                    </div>
+                    <div class="route-tab" data-category="metro">
+                        <i class="fas fa-city"></i> Metro Cities
+                    </div>
+                    <div class="route-tab" data-category="tourist">
+                        <i class="fas fa-camera-retro"></i> Tourist Destinations
+                    </div>
+                    <div class="route-tab" data-category="business">
+                        <i class="fas fa-briefcase"></i> Business Routes
+                    </div>
+                    <div class="route-tab" data-category="pilgrimage">
+                        <i class="fas fa-place-of-worship"></i> Pilgrimage
+                    </div>
+                </div>
+
+                <!-- Route Cards Grid -->
+                <div class="route-cards-grid">
+                    <!-- Card 1: New Delhi to Mumbai (Metro/Business) - Rajdhani Express -->
+                    <div class="route-card glass-card" data-categories="all metro business">
+                        <div class="card-image-placeholder" style="background-image: url('rajdhani.png');">
+                            <span class="card-tag">95% Popular</span>
+                        </div>
+                        <div class="card-content">
+                            <h3>New Delhi <i class="fas fa-arrow-right"></i> Mumbai Central</h3>
+                            <p class="route-stations">NDLS to CSMT | Train 12952 (Rajdhani Express)</p>
+                            <span class="route-info text-green">Avg. Journey: 16h 50m</span>
+                            <span class="route-info text-blue">Availability: Sleeper, 3A, 2A</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Bangalore to Chennai (Metro/Business) - Shatabdi Express -->
+                    <div class="route-card glass-card" data-categories="all metro business">
+                        <div class="card-image-placeholder" style="background-image: url('shatabdi.png');">
+                            <span class="card-tag text-orange">88% Popular</span>
+                        </div>
+                        <div class="card-content">
+                            <h3>Bangalore <i class="fas fa-arrow-right"></i> Chennai Central</h3>
+                            <p class="route-stations">SBC to MAS | Train 22682 (Shatabdi Express)</p>
+                            <span class="route-info text-green">Avg. Journey: 4h 55m</span>
+                            <span class="route-info text-blue">Availability: CC, EC</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Kolkata to Puri (Tourist/Pilgrimage) -->
+                    <div class="route-card glass-card" data-categories="all tourist pilgrimage">
+                        <div class="card-image-placeholder" style="background-image: url('chennaiexpress.png');">
+                            <span class="card-tag text-purple">92% Popular</span>
+                        </div>
+                        <div class="card-content">
+                            <h3>Howrah <i class="fas fa-arrow-right"></i> Puri</h3>
+                            <p class="route-stations">HWH to Puri | Train 12837 (Puri Express)</p>
+                            <span class="route-info text-green">Avg. Journey: 7h 40m</span>
+                            <span class="route-info text-blue">Availability: Sleeper, 3A</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Jaipur to Udaipur (Tourist) -->
+                    <div class="route-card glass-card" data-categories="all tourist">
+                        <div class="card-image-placeholder" style="background-image: url('bg.png');">
+                            <span class="card-tag text-blue">80% Popular</span>
+                        </div>
+                        <div class="card-content">
+                            <h3>Jaipur <i class="fas fa-arrow-right"></i> Udaipur City</h3>
+                            <p class="route-stations">JP to UDZ | Train 12981 (Superfast Exp)</p>
+                            <span class="route-info text-green">Avg. Journey: 7h 20m</span>
+                            <span class="route-info text-blue">Availability: 3A, 2A</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 5: New Delhi to Patna (Metro/Business) -->
+                    <div class="route-card glass-card" data-categories="all metro business">
+                        <div class="card-image-placeholder" style="background-image: url('patna.png');">
+                            <span class="card-tag text-orange">75% Popular</span>
+                        </div>
+                        <div class="card-content">
+                            <h3>New Delhi <i class="fas fa-arrow-right"></i> Patna Jn</h3>
+                            <p class="route-stations">NDLS to PNBE | Train 12392 (Shramjeevi Exp)</p>
+                            <span class="route-info text-green">Avg. Journey: 14h 30m</span>
+                            <span class="route-info text-blue">Availability: Sleeper, 3A, 2A</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="features-section" id="features">
+            <div class="container">
+                <h2>Why Choose the Reimagined IRCTC?</h2>
+                <div class="features-grid">
+                    <div class="feature-card glass-card">
+                        <i class="fas fa-ticket text-green"></i>
+                        <h3>Simpler Booking</h3>
+                        <p>Intuitive 3-step process to book your journey quickly and efficiently.</p>
+                    </div>
+                    <div class="feature-card glass-card">
+                        <i class="fas fa-wifi-slash text-blue"></i>
+                        <h3>Low Data Working</h3>
+                        <p>Access your tickets and basic info even without an internet connection.</p>
+                    </div>
+                    <div class="feature-card glass-card">
+                        <i class="fas fa-clock text-orange"></i>
+                        <h3>Real-time Updates</h3>
+                        <p>Instant seat availability, fare updates, and accurate train running status.</p>
+                    </div>
+                    <div class="feature-card glass-card">
+                        <i class="fas fa-headset text-purple"></i>
+                        <h3>AI Assistant</h3>
+                        <p>Voice and regional language support for instant queries and personalized help.</p>
+                    </div>
+                    <div class="feature-card glass-card">
+                        <i class="fas fa-battery-half text-yellow"></i>
+                        <h3>Lite Mode (Ad-free)</h3>
+                        <p>A minimalist, fast-loading interface that saves data and boosts speed.</p>
+                    </div>
+                    <!-- <div class="feature-card glass-card">
+                        <i class="fas fa-universal-access text-red"></i>
+                        <h3>Accessible Design</h3>
+                        <p>WCAG 2.1 compliant design for users with visual and motor impairments.</p>
+                    </div> -->
+                </div>
+            </div>
+        </section>
+
+        <section class="lite-mode-callout">
+            <div class="container">
+                <button class="btn btn-lite-mode glass-card" onclick="toggleLiteMode()">
+                    <i class="fas fa-bolt"></i> Switch to Lite Mode (Save Data & Go Faster)
+                </button>
+                <p>Experience ultra-fast booking with a minimal layout.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Booking Modal -->
+    <div id="booking-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-content glass-card">
+            <button class="modal-close" onclick="hideBookingModal()">&times;</button>
+            <h3 class="modal-heading"><i class="fas fa-ticket-alt text-primary"></i> Book Your Journey</h3>
+            <p class="modal-subtext">This modal represents the next steps after searching for trains.</p>
+
+            <div class="booking-steps">
+                <div class="step active">1. Select Train & Class</div>
+                <div class="step">2. Passenger Details</div>
+                <div class="step">3. Payment</div>
+            </div>
+
+            <div class="train-list">
+                <!-- Dummy Train Card -->
+                <div class="train-card glass-card">
+                    <div class="train-info">
+                        <h4>12020 SHATABDI EXP</h4>
+                        <p class="route">NDLS <i class="fas fa-arrow-right"></i> LKO</p>
+                        <p class="duration">Travel Time: 6h 30m</p>
+                    </div>
+                    <div class="train-availability">
+                        <div class="class-option">
+                            <span class="class-name">CC</span>
+                            <span class="availability text-green">AVL 120</span>
+                            <span class="fare">₹ 1050</span>
+                            <button class="btn btn-primary btn-select">Select</button>
+                        </div>
+                        <div class="class-option">
+                            <span class="class-name">EC</span>
+                            <span class="availability text-orange">RAC 10</span>
+                            <span class="fare">₹ 1800</span>
+                            <button class="btn btn-primary btn-select" disabled>Waitlist</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" style="margin-top: 20px;">Proceed to Passenger Details</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-main">
+                <div class="footer-logo-section">
+                    <i class="fas fa-train"></i> <strong>IRCTC Reimagined</strong>
+                    <p>Connecting India with accessible, intelligent railway booking solutions for everyone.</p>
+                    <a href="#" class="btn btn-primary footer-cert-btn">Government Certified</a>
+                </div>
+                <div class="footer-links-section">
+                    <div class="footer-column">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="#">Book Tickets</a></li>
+                            <li><a href="#">My Journeys</a></li>
+                            <li><a href="#">Accessibility</a></li>
+                            <li><a href="#">AI Assistant</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Support</h4>
+                        <ul>
+                            <li><a href="#">Help Center</a></li>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Accessibility Support</a></li>
+                            <li><a href="#">System Status</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Contact</h4>
+                        <ul>
+                            <li><i class="fas fa-phone-alt"></i> 139 (Railway Enquiry)</li>
+                            <li><i class="fas fa-envelope"></i> support@irctc.co.in</li>
+                            <li><i class="fas fa-globe"></i> 18 Languages Supported</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 IRCTC Reimagined - Hackathon Project</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AI Chatbot -->
+    <div id="chatbot">
+        <button id="chatbot-btn"><i class="fas fa-robot"></i></button>
+        <div id="chat-window" class="hidden">
+            <div class="chat-header">
+                <h4>IRCTC Assistant</h4>
+                <button id="close-chat">&times;</button>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="bot-msg">
+                    👋 Hi! I'm your IRCTC Assistant. How can I help you today?
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="user-input" placeholder="Type your message..." />
+                <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
