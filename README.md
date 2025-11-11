@@ -71,16 +71,16 @@ This prototype focuses on **modern UI/UX**, **real-time interactivity**, and **A
 ## 📁 Folder Structure
 ```
 /
-├── index.html # Main landing page
-├── style.css # Styling definitions
-├── script.js # JavaScript for interactivity
-├── bg.png # Background image
-├── logo1.png # Branding/logo
-├── rajdhani.png # Train image
-├── shatabdi.png # Train image
-├── chennaiexpress.png # Train image
-├── patna.png # Train image
-├── vid.mp4 # Demo video
+├── index.html 
+├── style.css 
+├── script.js 
+├── bg.png 
+├── logo1.png 
+├── rajdhani.png 
+├── shatabdi.png 
+├── chennaiexpress.png 
+├── patna.png
+├── vid.mp4 
 └── .gitignore
 ```
 
