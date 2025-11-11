@@ -69,6 +69,7 @@ This prototype focuses on **modern UI/UX**, **real-time interactivity**, and **A
 ---
 
 ## 📁 Folder Structure
+```
 /
 ├── index.html # Main landing page
 ├── style.css # Styling definitions
@@ -81,8 +82,7 @@ This prototype focuses on **modern UI/UX**, **real-time interactivity**, and **A
 ├── patna.png # Train image
 ├── vid.mp4 # Demo video
 └── .gitignore
-
----
+```
 
 
 ---
